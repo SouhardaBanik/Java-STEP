@@ -1,63 +1,90 @@
-import java.util.HashMap;
-
 public class OOPSBannerApp {
 
-    public static HashMap<Character, String[]> createCharacterMap() {
-        HashMap<Character, String[]> charMap = new HashMap<>();
+    static class CharacterPatternMap {
+        private char character;
+        private String[] pattern;
 
-        charMap.put('O', new String[] {
-            "  *** ",
-            " ** ** ",
-            " ** ** ",
-            " ** ** ",
-            " ** ** ",
-            " ** ** ",
-            "  *** "
-        });
+        public CharacterPatternMap(char character, String[] pattern) {
+            this.character = character;
+            this.pattern = pattern;
+        }
 
-        charMap.put('P', new String[] {
-            " ***** ",
-            " ** **",
-            " ** **",
-            " ***** ",
-            " ** ",
-            " ** ",
-            " ** "
-        });
+        public char getCharacter() {
+            return character;
+        }
 
-        charMap.put('S', new String[] {
-            "  **** ",
-            " ** ",
-            " ** ",
-            "  *** ",
-            "    ** ",
-            "    ** ",
-            " **** "
-        });
-
-        return charMap;
+        public String[] getPattern() {
+            return pattern;
+        }
     }
 
-    public static void displayBanner(String message, HashMap<Character, String[]> charMap) {
-        if (charMap.isEmpty() || !charMap.containsKey('O')) return;
-        
-        int patternHeight = charMap.get('O').length;
+    public static CharacterPatternMap[] createCharacterPatternMaps() {
+        CharacterPatternMap[] maps = new CharacterPatternMap[4];
 
-        for (int line = 0; line < patternHeight; line++) {
-            StringBuilder sb = new StringBuilder();
-            for (char ch : message.toCharArray()) {
-                String[] pattern = charMap.get(ch);
-                if (pattern != null) {
-                    sb.append(pattern[line]).append("  ");
-                }
+        maps[0] = new CharacterPatternMap('O', new String[]{
+                " ***** ",
+                "*     *",
+                "*     *",
+                "*     *",
+                " ***** "
+        });
+
+        maps[1] = new CharacterPatternMap('P', new String[]{
+                "****** ",
+                "*     *",
+                "****** ",
+                "*      ",
+                "*      "
+        });
+
+        maps[2] = new CharacterPatternMap('S', new String[]{
+                " ***** ",
+                "*      ",
+                " ***** ",
+                "      *",
+                " ***** "
+        });
+
+        maps[3] = new CharacterPatternMap(' ', new String[]{
+                "       ",
+                "       ",
+                "       ",
+                "       ",
+                "       "
+        });
+
+        return maps;
+    }
+
+    public static String[] getCharacterPattern(char ch, CharacterPatternMap[] maps) {
+        for (CharacterPatternMap map : maps) {
+            if (map.getCharacter() == ch) {
+                return map.getPattern();
             }
-            System.out.println(sb.toString());
+        }
+        for (CharacterPatternMap map : maps) {
+            if (map.getCharacter() == ' ') {
+                return map.getPattern();
+            }
+        }
+        return new String[0];
+    }
+
+    public static void printMessage(String message, CharacterPatternMap[] maps) {
+        int height = 5;
+
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < message.length(); j++) {
+                String[] pattern = getCharacterPattern(message.charAt(j), maps);
+                System.out.print(pattern[i] + "  ");
+            }
+            System.out.println();
         }
     }
 
     public static void main(String[] args) {
-        HashMap<Character, String[]> charMap = createCharacterMap();
+        CharacterPatternMap[] maps = createCharacterPatternMaps();
         String message = "OOPS";
-        displayBanner(message, charMap);
+        printMessage(message, maps);
     }
 }
