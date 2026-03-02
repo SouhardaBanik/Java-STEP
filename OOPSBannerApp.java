@@ -1,3 +1,4 @@
+
 public class OOPSBannerApp {
 
     public static void main(String[] args) {
@@ -12,8 +13,7 @@ public class OOPSBannerApp {
             " ***     ***    *        ***** "
         };
 
-        for (String line : lines) {
-            System.out.println(line);
-        }
     }
 }
+
+
